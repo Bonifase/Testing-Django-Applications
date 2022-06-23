@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from __future__ import unicode_literals
 
 
 class TaskManager(models.Manager):

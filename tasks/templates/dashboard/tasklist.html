@@ -1,0 +1,12 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Tasks</h1>
+    <div class="row">
+        {% for task in tasks %}
+            <div class="card">
+            <strong>{{ task.title }}</strong>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
