@@ -1,3 +1,0 @@
-# I test any code to break things and make them crash.
-
-I am in the favor of the consideration of considering the testing that is carried out on Code development and code inspection through **Unit testing**, **Integration testing**, **UI testing**, **Functional testing**, **Regression testing**, **Load testing**, **Security testing**, and **Compatability testing** in the software development process.
