@@ -1,6 +1,5 @@
 
-:green:`Testing Web Applications`.
-==================================
+
 .. role:: red
   :class: red
 
@@ -10,7 +9,8 @@
 .. role:: bolditalic
   :class: bolditalic
 
-
+:green:`Testing Web Applications`.
+==================================
 
 :red:`WARNING` :bolditalic:`Don't forget to test it!`
 
