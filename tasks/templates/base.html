@@ -1,29 +1,100 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
+    <link rel="icon" href={% static 'images/Checklist.ico' %}/>
+    <title>TODO Manager | {{ title }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        header {
+          background-color: #EAF6FF !important;
+        }
+        .hiddden{
+          visibility: hidden !important;
+        }
+        .mt-6 {
+          margin-top: 12rem !important;
+          margin-bottom: 12rem !important;
+        }
+        .mrl-2 {
+          margin-right: 3rem !important;
+          margin-left: 3rem !important;
+        }
+        .cover {
+          background-image: url({% static "images/to do.png" %});
+          background-repeat: no-repeat;
+
+        }
+        .c-green{
+          color: #3AD698;
+        }
+        .c-blue {
+          color: #0075FF;
+        }
+        .c-yellow {
+          color: #FCBD07;
+        }
+        .c-red {
+          color: #DE2720;
+        }
+        .logo-text-underline {
+          position: relative;
+          color: #FCBD07;
+          opacity: 1.5 !important;
+        }
+        .logo-text-underline:after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          transform: scaleX(0);
+          height: .2rem;
+          bottom: 0;
+          left: 0;
+          background-color: #FCBD07;
+          transform-origin: bottom right;
+          transition: transform 0.25s ease-out;
+        }
+        .logo-text-underline:hover:after {
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+        .box-shadow {
+          box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+          border-radius: 5%;
+        }
+        .my-tasks-container {
+          background-color: #F5FAFF !important;
+          height: 100vmin;
+          margin-top: 0px;
+      }
+    </style>
   </head>
   <header></header>
-  <body>
+  <body class="cover">
     <header>
-      <nav class="navbar navbar-expand-lg bg-light">
+      <nav class="navbar navbar-expand-lg bg-transparent">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <a class="navbar-brand" href="/">
+              <h1 class="logo-text-underline">
+                <img height="80" width="80" src={% static 'images/Checklist.ico' %}/>
+                <span class="c-yellow">TODO&nbsp</span>
+                <span class="c-blue">Manager</span>
+              </h1>
+          </a>
+          <button class="navbar-toggler hiddden" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              <li class="nav-item hiddden">
                 <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item hiddden">
                 <a class="nav-link" href="#">Link</a>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown hiddden">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </a>
@@ -34,14 +105,21 @@
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
+              <li class="nav-item hiddden">
                 <a class="nav-link disabled">Disabled</a>
               </li>
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            {% if user.is_authenticated %}
+              <li class="d-flex nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  My Account
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/accounts/profile/">Profile</a></li>
+                  <li><a class="dropdown-item" href="/accounts/logout/">Logout</a></li>
+                </ul>
+              </li>
+            {% endif %}
           </div>
         </div>
       </nav>

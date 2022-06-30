@@ -1,18 +1,51 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% block content %}
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form.visible_fields %}
-        <p>{{ field }}</p>
-          {% if field.errors %}
-              {% for error in field.errors %}
-              <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-              </div>
-              {% endfor %}
-          {% endif %}
-      {% endfor %}
-    </form>
+{% load static widget_tweaks %}
+{% block extra_css %}
+<style>
+
+</style>
 {% endblock %}
+{% block content %}
+  <div class="row mt-6">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <div class="bg-white box-shadow p-4">
+        <div class="d-grid gap-2 col-4 mx-auto mb-2">
+          <h3>Login</h3>
+        </div>
+        <form method="post" class="mb-3">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">&nbsp&nbsp</span>
+                {{ field }}
+              </div>
+              {% if field.errors %}
+                  {% for error in field.errors %}
+                  <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                  </div>
+                  {% endfor %}
+              {% endif %}
+          {% endfor %}
+          <div class="d-grid gap-2 col-12 mx-auto">
+            <button type="submit" class="btn btn-outline-secondary">Login</button>
+            <a class="btn btn-outline-secondary ">Register</a>
+          </div>
+          <div class='form-notice-small mt-3 mb-2'>
+            <a href='/accounts/password_reset'>Forgot your password?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+{% endblock %}
+
+
+<div class="btn-group btn-group-lg" role="group" aria-label="...">...</div>
+<div class="btn-group" role="group" aria-label="...">...</div>
+<div class="btn-group btn-group-sm" role="group" aria-label="...">...</div>

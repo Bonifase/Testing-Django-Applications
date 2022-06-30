@@ -21,13 +21,14 @@ class Home(RedirectView):
 
 class TaskListView(TemplateView):
     template_name = 'dashboard/tasklist.html'
-    
+    title = "TODO Manager | My Tasks"
+
     def get_queryset(self):
         return Task.objects.filter(owner=self.request.user)
-    
+
     def get_context_data(self, **kwargs):
         context = super(TaskListView, self).get_context_data(**kwargs)
-        context['task'] = self.get_queryset()
+        context['tasks'] = self.get_queryset()
+        context['title'] = self.title
         return context
-        
-    
+
