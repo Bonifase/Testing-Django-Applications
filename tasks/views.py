@@ -1,10 +1,10 @@
-
-import re
+from re import T
 from django.urls import reverse
-from django.shortcuts import render
-from django.views.generic import RedirectView, TemplateView
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.views.generic import RedirectView, TemplateView, CreateView, DeleteView, UpdateView
 
 from .models import Task
+from .forms import TaskForm
 
 class Home(RedirectView):
     """
@@ -20,8 +20,12 @@ class Home(RedirectView):
 
 
 class TaskListView(TemplateView):
+    """
+       View class to list logged in users tasks.
+       Must be an authenticated user to perform this action.
+    """
     template_name = 'dashboard/tasklist.html'
-    title = "TODO Manager | My Tasks"
+    title = "Tasks"
 
     def get_queryset(self):
         return Task.objects.filter(owner=self.request.user)
@@ -32,3 +36,69 @@ class TaskListView(TemplateView):
         context['title'] = self.title
         return context
 
+
+class NewTaskView(CreateView):
+    """
+       View class to create a new task.
+       Must be an authenticated user to perform this action.
+       Redirects to the task list view upon creation.
+    """
+    template_name = 'task.html'
+    form_class = TaskForm
+    title = "Create Task"
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.owner = self.request.user
+        task.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class DeleteTaskView(DeleteView):
+    """
+       View class to delete a task.
+       Must be owner of the task to perform this action.
+       Redirects to the task list view upon deletion.
+    """
+    title = "Delete Task"
+    model = Task
+    pk_url_kwarg = 'task_id'
+
+
+class TaskView(UpdateView):
+    """
+       View class to view and edit a task.
+       Must be owner of the task to perform this action.
+       Redirects to the task list view upon completion.
+    """
+    template_name = 'task.html'
+    form_class = TaskForm
+    pk_url_kwarg = 'task_id'
+
+    def get_queryset(self):
+        if hasattr(self.request, 'user') and self.request.user.is_active :
+            return Task.objects.filter(owner=self.request.user)
+        return Task.objects.none()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TaskView, self).get_context_data(*args, **kwargs)
+        context['update'] = True
+        return context
+
+def toggle_complete(request, task_id):
+    """
+       Toggles complete status a task.
+       If a task with task_id is incomplete, mark complete else mark incomplete.
+       Must be owner of the task to perform this action.
+    """
+    try:
+        task = Task.objects.get(pk=task_id, owner=request.user)
+    except Task.DoesNotExist:
+        return HttpResponseNotFound()
+
+    if task.is_complete:
+        task.mark_incomplete()
+    else:
+        task.mark_complete()
+
+    return HttpResponseRedirect(reverse('dashboard'))
