@@ -6,7 +6,7 @@ from django.views.generic import RedirectView, TemplateView, CreateView, DeleteV
 from .models import Task
 from .forms import TaskForm
 
-class Home(RedirectView):
+class HomeView(RedirectView):
     """
        Home page. Redirects to login page or task list.
     """
