@@ -1,5 +1,3 @@
-import re
-from django.urls import reverse
 from django.shortcuts import get_object_or_404
 
 from .models import Task
@@ -10,6 +8,7 @@ class DashboardRedirectMixin(object):
     Resolves a success URL for a view that redirects to the dashboard.
     """
     def get_success_url(self):
+        from django.urls import reverse
         return reverse('dashboard')
 
 

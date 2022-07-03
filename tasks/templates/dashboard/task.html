@@ -1,11 +1,52 @@
 <!doctype html>
 {% extends 'base.html' %}
-{% load widget_tweaks %}
+{% load static widget_tweaks %}
 
 {% block title %}Create Task{% endblock %}
 
 {% block content %}
-    <div class="card">
+<div class="row mt-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card m-2 box-shadow p-4">
+            {% if update %}
+                <form action="{% url 'dashboard: delete_task' task.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="delete_task" class="btn btn-primary">
+                        <i class="fa-solid fa-trash-xmark"></i>
+                    </button>
+                </form>
+                <h1>Edit Task</h1>
+            {% else %}
+                <h1>Create Task</h1>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
 
+                <div class="error">
+                    {{ form.errors }}
+                </div>
+                {% for field in form.visible_fields %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">&nbsp&nbsp</span>
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endfor %}
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" class="btn btn-outline-secondary">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+    <div class="col-md-2"></div>
+</div>
 {% endblock %}

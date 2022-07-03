@@ -1,10 +1,11 @@
 from re import T
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.views.generic import RedirectView, TemplateView, CreateView, DeleteView, UpdateView
 
 from .models import Task
 from .forms import TaskForm
+from .mixins import DashboardRedirectMixin
 
 class HomeView(RedirectView):
     """
@@ -37,15 +38,16 @@ class TaskListView(TemplateView):
         return context
 
 
-class NewTaskView(CreateView):
+class NewTaskView(DashboardRedirectMixin, CreateView):
     """
        View class to create a new task.
        Must be an authenticated user to perform this action.
        Redirects to the task list view upon creation.
     """
-    template_name = 'task.html'
+    template_name = 'dashboard/task.html'
     form_class = TaskForm
-    title = "Create Task"
+    title = "New Task"
+    # print(dir(form_class))
 
     def form_valid(self, form):
         task = form.save(commit=False)
@@ -71,7 +73,8 @@ class TaskView(UpdateView):
        Must be owner of the task to perform this action.
        Redirects to the task list view upon completion.
     """
-    template_name = 'task.html'
+    template_name = 'dashboard/task.html'
+    title = 'Update Task'
     form_class = TaskForm
     pk_url_kwarg = 'task_id'
 
@@ -101,4 +104,4 @@ def toggle_complete(request, task_id):
     else:
         task.mark_complete()
 
-    return HttpResponseRedirect(reverse('dashboard'))
+    return HttpResponseRedirect(reverse('dashboard: dashboard'))
