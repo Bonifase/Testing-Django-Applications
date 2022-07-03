@@ -1,5 +1,6 @@
 .todo/
 .vscode/
+.env
 *__pycache__
 db.sqlite3
 links.txt
