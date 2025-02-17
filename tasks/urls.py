@@ -1,11 +1,16 @@
-from django.urls import re_path, path
+from django.urls import path, re_path
 
-from tasks.views import DeleteTaskView, HomeView, NewTaskView, TaskListView
+from .views import (
+    DeleteTaskView,
+    HomeView,
+    NewTaskView,
+    TaskListView,
+)
 
-# app_name = 'dashboard'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('dashboard/tasks/', TaskListView.as_view(), name='dashboard'),
-    path('dashboard/new-task/', NewTaskView.as_view(), name='new_task'),
-    path('dashboard/delete-task/<int:task_id>/', DeleteTaskView.as_view(), name='delete_task'),
+    re_path(r'tasks/(?P<view>.*)$', TaskListView.as_view(), name='dashboard'),
+    path('new-task/', NewTaskView.as_view(), name='new_task'),
+    path('delete-task/<slug:pk>/', DeleteTaskView.as_view(), name='delete_task'),
+    # path('tasks/', TaskListView.as_view(), name='toggle_view'),
 ]

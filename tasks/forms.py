@@ -13,7 +13,7 @@ class TaskForm(forms.ModelForm):
             {'class': 'form-control', 'placeholder': 'Task title goes here...'}
         )
         self.fields["description"].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Task description goes here...'}
+            {'class': 'form-control', 'placeholder': 'Task activities goes here...'}
         )
         self.fields["due_date"].widget.input_type = "date"
         self.fields["due_date"].widget.attrs.update(

@@ -1,7 +1,9 @@
 from re import T
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.views.generic import RedirectView, TemplateView, CreateView, DeleteView, UpdateView
+
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Task
 from .forms import TaskForm
@@ -15,7 +17,7 @@ class HomeView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         if hasattr(self.request, 'user') and self.request.user.is_active:
-            return reverse('dashboard')
+            return reverse('dashboard', kwargs={'view':"grid"})
         else:
             return reverse('login')
 
@@ -25,8 +27,10 @@ class TaskListView(TemplateView):
        View class to list logged in users tasks.
        Must be an authenticated user to perform this action.
     """
-    template_name = 'dashboard/tasklist.html'
+    template_name = 'dashboard/grid_list.html'
     title = "Tasks"
+    list_view = "grid"
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Task.objects.filter(owner=self.request.user)
@@ -37,6 +41,24 @@ class TaskListView(TemplateView):
         context['title'] = self.title
         return context
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        print(context)
+
+        if context['view'] == "table":
+            context['list_view'] = "table"
+            self.template_name = 'dashboard/table_list.html'
+            return self.render_to_response(context)
+
+        elif context['view'] == "grid":
+            context['list_view'] = "grid"
+            self.template_name = 'dashboard/grid_list.html'
+            return self.render_to_response(context)
+
+        else:
+            context['list_view'] = "grid"
+            return self.render_to_response(context)
+
 
 class NewTaskView(DashboardRedirectMixin, CreateView):
     """
@@ -44,6 +66,7 @@ class NewTaskView(DashboardRedirectMixin, CreateView):
        Must be an authenticated user to perform this action.
        Redirects to the task list view upon creation.
     """
+    permission_classes = [IsAuthenticated]
     template_name = 'dashboard/task.html'
     form_class = TaskForm
     title = "New Task"
@@ -88,6 +111,7 @@ class TaskView(UpdateView):
         context['update'] = True
         return context
 
+
 def toggle_complete(request, task_id):
     """
        Toggles complete status a task.
@@ -105,3 +129,6 @@ def toggle_complete(request, task_id):
         task.mark_complete()
 
     return HttpResponseRedirect(reverse('dashboard: dashboard'))
+
+
+

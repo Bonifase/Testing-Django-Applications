@@ -9,7 +9,7 @@ class DashboardRedirectMixin(object):
     """
     def get_success_url(self):
         from django.urls import reverse
-        return reverse('dashboard')
+        return reverse('dashboard', kwargs={'view':"grid"})
 
 
 class TaskOwnerMixin(object):
