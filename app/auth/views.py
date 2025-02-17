@@ -21,7 +21,6 @@ class UserProfileView(DetailView):
     # form_class = UserProfileForm
     template_name = "registration/edit_profile.html"
 
-
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.id).all()
 
