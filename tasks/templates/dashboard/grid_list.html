@@ -1,0 +1,41 @@
+{% extends 'dashboard/tasklist.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block sub_content %}
+    {% for task in tasks %}
+    <div class="col-md-4">
+        <div class="card mt-4">
+            <div class="card-header">{{ task.title }}</div>
+            <div class="card-body">
+                <span class="text-decoration-underline">Activities:</span>
+                <ul style="list-style-type: none;">
+                    {% for item in task.description|split_activities:"." %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                <p><strong>Due On:</strong> {{ task.due_date }}</p>
+            </div>
+            <div class="card-footer">
+                {% comment %} {% if task.due_soon %}
+                    <div class="btn btn-outline-info">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                    </div>
+                {% else %}
+                    <div class="btn btn-success">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </div>
+                {% endif %} {% endcomment %}
+                <div class="btn-group d-flex">
+                    <button type="button" class="btn btn-outline-info mx-lg-2">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-outline-danger">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

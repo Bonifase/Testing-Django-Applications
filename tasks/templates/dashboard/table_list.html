@@ -1,0 +1,37 @@
+{% extends 'dashboard/tasklist.html' %}
+{% load static %}
+
+{% block sub_content %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Task Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                {% if task.due_soon %}
+                    <div class="btn btn-danger">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                    </div>
+                {% else %}
+                    <div class="btn btn-success">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+</table>
+{% endblock %}

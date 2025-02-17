@@ -18,7 +18,7 @@ class Task(models.Model):
     due_date = models.DateTimeField(null=True, blank=True)
     complete_time = models.DateTimeField(null=True, blank=True)
 
-    objects: TaskManager()
+    objects: TaskManager() # type: ignore
 
     @property
     def is_complete(self):
@@ -50,4 +50,4 @@ class Task(models.Model):
         self.complete_time = None
         if commit:
             self.save()
-          
+

@@ -1,12 +1,31 @@
 <!doctype html>
 {% extends 'base.html' %}
+{% load static widget_tweaks %}
+
 {% block content %}
-    <h1>Tasks</h1>
-    <div class="row">
-        {% for task in tasks %}
-            <div class="card">
-            <strong>{{ task.title }}</strong>
+<div class="my-tasks-container">
+    <div class="row mt-4 p-4">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{% url 'new_task' %}" class="btn btn-outline-dark">
+                    <i class="fa-light fa-plus"></i>&nbsp Add New Task
+                </a>
             </div>
-        {% endfor %}
+            <div class="col-md-6 d-flex justify-content-end">
+                {% if list_view == "grid" %}
+                    <a href="{% url 'dashboard' view='table' %}" class="btn btn-light">
+                        <i class="fa-duotone fa-table-cells"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'dashboard' view='grid' %}" class="btn btn-light">
+                        <i class="fa-solid fa-table-cells"></i>
+                    </a>
+                    {% endif %}
+
+            </div>
+        </div>
+        {% block sub_content %}
+        {% endblock sub_content %}
     </div>
+</div>
 {% endblock %}
