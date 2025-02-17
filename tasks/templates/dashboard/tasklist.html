@@ -1,37 +1,31 @@
 <!doctype html>
 {% extends 'base.html' %}
 {% load static widget_tweaks %}
+
 {% block content %}
 <div class="my-tasks-container">
     <div class="row mt-4 p-4">
-        <h1>Tasks</h1>
-        <div>
-            <a href="{% url 'new_task' %}" class="btn btn-light">
-                <i class="fa-light fa-plus"></i>&nbsp Add Task
-            </a>
-        </div>
-        {% for task in tasks %}
-        <div class="col-md-3">
-            <div class="card mt-4">
-                <div class="card-header">{{ task.title }}</div>
-                <div class="card-body">
-                    <p><strong>Desctription:</strong> {{ task.description }}</p>
-                    <p><strong>Due Date:</strong> {{ task.due_date }}</p>
-                </div>
-                <div class="card-footer">
-                {% if task.due_soon %}
-                <div class="btn btn-danger">
-                    <i class="fa-solid fa-thumbs-down"></i>
-                </div>
-                {% else %}
-                <div class="btn btn-success">
-                    <i class="fa-solid fa-thumbs-up"></i>
-                </div>
-                {% endif %}
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{% url 'new_task' %}" class="btn btn-outline-dark">
+                    <i class="fa-light fa-plus"></i>&nbsp Add New Task
+                </a>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                {% if list_view == "grid" %}
+                    <a href="{% url 'dashboard' view='table' %}" class="btn btn-light">
+                        <i class="fa-duotone fa-table-cells"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'dashboard' view='grid' %}" class="btn btn-light">
+                        <i class="fa-solid fa-table-cells"></i>
+                    </a>
+                    {% endif %}
+
             </div>
         </div>
-        {% endfor %}
+        {% block sub_content %}
+        {% endblock sub_content %}
     </div>
 </div>
 {% endblock %}

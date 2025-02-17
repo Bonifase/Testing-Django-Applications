@@ -10,9 +10,9 @@
     <div class="col-md-8">
         <div class="card m-2 box-shadow p-4">
             {% if update %}
-                <form action="{% url 'dashboard: delete_task' task.pk %}" method="POST">
+                <form action="{% url 'dashboard: edit_task' task.pk %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" name="delete_task" class="btn btn-primary">
+                    <button type="submit" name="edit_task" class="btn btn-secondary">
                         <i class="fa-solid fa-trash-xmark"></i>
                     </button>
                 </form>
